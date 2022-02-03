@@ -3,6 +3,8 @@ import controller from "../controllers/posts";
 
 const router = Router();
 
-router.get("/posts", controller.getPosts);
+// base route is /api/posts
+
+router.get("/", controller.getPosts);
 
 export default router;
