@@ -8,6 +8,7 @@ import signJWT from "../utils/signJWT";
 
 const validateToken = (req: Request, res: Response) => {
   logger.info("Token validated, user authorized");
+  return res.status(200).json({ message: "Token validated, user authorized." });
 };
 
 const getUsers = async (req: Request, res: Response) => {
@@ -28,38 +29,28 @@ const getUser = (req: Request, res: Response) => {
 };
 
 const login = async (req: Request, res: Response) => {
-
-  // NEEDS A REWRITE  MADE A MISTAKE CONVERING IT TO ASYNC
   let { username, password } = req.body as Iuser;
 
   try {
     const user = await User.findOne({ username }).exec();
 
     if (user) {
-      try {
-        const isAuth = await bcrypt.compare(password, user.password);
+      const isAuth = await bcrypt.compare(password, user.password);
 
+      if (isAuth) {
         signJWT(user, (error, token) => {
-          if (error) {
-            logger.error(error.message, error);
-            return res.status(401).json({ message: "Unauthorized" });
-          } else if (token) {
-            return res.status(200).json({
-              message: "Auth successful.",
-              token,
-              user: user,
-            });
-          }
+          if (error) res.status(401).json({ message: "Unauthorized" });
+          if (token) res.status(200).json({ token });
         });
-      } catch (error) {
-        return res.status(401).json({ message: "Unauthorized" });
+      } else {
+        res.status(401).json({ message: "Unauthorized" });
       }
     } else {
       res.status(500).json({ message: "User not found." });
     }
   } catch (error: any) {
-    logger.error(error.message, error);
-    return res.status(500).json({ message: "User not found." });
+    const { message } = error;
+    res.status(400).json({ message, error });
   }
 };
 

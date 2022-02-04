@@ -12,15 +12,18 @@ const signJWT = (
     timeSinceEpoch + Number(config.server.token.expireTime) * 100000;
   let expirationTimeInSeconds = Math.floor(expirationTime / 1000);
   logger.info(`Attempting to sign token for ${user}`);
+  const { username, password } = user;
 
   try {
-    const { username, password } = user;
-    jwt.sign({ username }, config.server.token.secret, {
-      issuer: config.server.token.issuer,
-      algorithm: "HS256",
-      expiresIn: expirationTimeInSeconds,
-    }),
-      (error: any, token: string) => {
+    jwt.sign(
+      { username },
+      config.server.token.secret,
+      {
+        issuer: config.server.token.issuer,
+        algorithm: "HS256",
+        expiresIn: expirationTimeInSeconds,
+      },
+      (error: any, token) => {
         if (error) {
           {
             callback(error, null);
@@ -30,7 +33,8 @@ const signJWT = (
             callback(null, token);
           }
         }
-      };
+      }
+    );
   } catch (error: any) {
     logger.error(error.message, error);
     callback(error, null);
