@@ -1,5 +1,7 @@
 import { Router } from "express";
 import controller from "../controllers/user";
+import { ValidateJoi, Schemas } from "../middleware/joi";
+import extractJWT from "../middleware/extractJWT";
 
 const router = Router();
 
@@ -7,8 +9,12 @@ const router = Router();
 
 router.get("/", controller.getUsers);
 
+router.get("/validate", extractJWT, controller.validateToken);
+
 router.get("/:userId", controller.getUser);
 
-router.post("/", controller.createUser);
+router.post("/register", ValidateJoi(Schemas.user), controller.register);
+
+router.post("/login", ValidateJoi(Schemas.user), controller.login);
 
 export default router;

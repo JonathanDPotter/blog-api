@@ -10,6 +10,9 @@ declare global {
       MONGO_USER: string;
       MONGO_PASSWORD: string;
       MONGO_DATABASE: string;
+      SERVER_TOKEN_EXPIRETIME: number;
+      SERVER_TOKEN_ISSUER: string;
+      SERVER_TOKEN_SECRET: string;
     }
   }
 }

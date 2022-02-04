@@ -16,7 +16,7 @@ server.listen(config.server.port, async () => {
     `Server listening on ${config.server.hostname}:${config.server.port}`
   );
   await mongo();
-  // parsing
+  // parsing requests
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
   // cors setup
