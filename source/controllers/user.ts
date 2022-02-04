@@ -19,13 +19,21 @@ const getUsers = async (req: Request, res: Response) => {
       count: users.length,
     });
   } catch (error: any) {
-    logger.error(error.message, error);
-    res.status(500).json({ message: error.message, error });
+    const { message } = error;
+    logger.error(message, error);
+    res.status(500).json({ message, error });
   }
 };
 
-const getUser = (req: Request, res: Response) => {
-  return res.status(200).json(req.params);
+const getUser = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.params);
+    res.status(200).json({ user });
+  } catch (error: any) {
+    const { message } = error;
+    logger.error(message, error);
+    res.status(500).json({ message, error });
+  }
 };
 
 const login = async (req: Request, res: Response) => {
@@ -50,6 +58,7 @@ const login = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     const { message } = error;
+    logger.error(message, error);
     res.status(400).json({ message, error });
   }
 };

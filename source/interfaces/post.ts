@@ -1,6 +1,4 @@
-import { Document } from "mongoose";
-
-export default interface Ipost extends Document {
+export default interface Ipost {
   author: string;
   title: string;
   body: string;

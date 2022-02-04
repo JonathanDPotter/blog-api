@@ -8,6 +8,6 @@ const postSchema = new Schema({
   date: Number,
 });
 
-const User = model("Post", postSchema);
+const Post = model("Post", postSchema);
 
-export default User;
+export default Post;
