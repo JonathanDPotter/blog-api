@@ -41,7 +41,7 @@ const createPost = async (req: Request, res: Response) => {
 const updatePost = async (req: Request, res: Response) => {
   try {
     logger.info(req.body);
-    const updated = await Post.findByIdAndUpdate(req.params).exec();
+    const updated = await Post.findByIdAndUpdate(req.params, req.body).exec();
     logger.info(updated._doc);
     res.status(200).json({ success: true });
   } catch (error: any) {
@@ -53,7 +53,7 @@ const updatePost = async (req: Request, res: Response) => {
 
 const deletePost = async (req: Request, res: Response) => {
   try {
-    const deleted = await Post.findByIdAndDelete(req.params, req.body);
+    const deleted = await Post.findByIdAndDelete(req.params);
     logger.info(deleted._doc);
     res.status(200).json({ success: true });
   } catch (error: any) {
