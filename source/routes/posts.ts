@@ -1,5 +1,6 @@
 import { Router } from "express";
 import controller from "../controllers/posts";
+import extractJWT from "../middleware/extractJWT";
 import { Schemas, ValidateJoi } from "../middleware/joi";
 
 const router = Router();
@@ -8,12 +9,17 @@ const router = Router();
 
 router.get("/", controller.getPosts);
 
-router.get("/:id", controller.getPost);
+router.get("/:_id", controller.getPost);
 
-router.post("/", ValidateJoi(Schemas.post), controller.createPost);
+router.post("/", ValidateJoi(Schemas.post), extractJWT, controller.createPost);
 
-router.put("/:_id", ValidateJoi(Schemas.post), controller.updatePost)
+router.put(
+  "/:_id",
+  ValidateJoi(Schemas.post),
+  extractJWT,
+  controller.updatePost
+);
 
-router.delete("/:_id", controller.deletePost);
+router.delete("/:_id", extractJWT, controller.deletePost);
 
 export default router;

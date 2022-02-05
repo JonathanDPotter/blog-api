@@ -7,12 +7,8 @@ const signJWT = (
   user: Iuser,
   callback: (error: Error | null, token: string | null) => void
 ): void => {
-  let timeSinceEpoch = new Date().getTime();
-  let expirationTime =
-    timeSinceEpoch + Number(config.server.token.expireTime) * 100000;
-  let expirationTimeInSeconds = Math.floor(expirationTime / 1000);
-  logger.info(`Attempting to sign token for ${user}`);
   const { username, password } = user;
+  logger.info(`Attempting to sign token for ${username}`);
 
   try {
     jwt.sign(
@@ -21,7 +17,7 @@ const signJWT = (
       {
         issuer: config.server.token.issuer,
         algorithm: "HS256",
-        expiresIn: expirationTimeInSeconds,
+        expiresIn: "1d",
       },
       (error: any, token) => {
         if (error) {

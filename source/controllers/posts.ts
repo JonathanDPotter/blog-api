@@ -5,22 +5,22 @@ import logger from "../utils/logger";
 const getPosts = async (req: Request, res: Response) => {
   try {
     const posts = await Post.find().exec();
-    res.status(200).json({ posts, count: posts.length });
+    res.status(200).json({ success: true, posts, count: posts.length });
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ message, error });
+    res.status(500).json({ success: false, message, error });
   }
 };
 
 const getPost = async (req: Request, res: Response) => {
   try {
     const post = await Post.findById(req.params).exec();
-    res.status(200).json({ post });
+    res.status(200).json({ success: true, post });
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ message, error });
+    res.status(500).json({ success: false, message, error });
   }
 };
 

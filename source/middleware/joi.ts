@@ -28,7 +28,7 @@ export const Schemas = {
   post: Joi.object<Ipost>({
     author: Joi.string().alphanum().max(15).required(),
     title: Joi.string().alphanum().max(30).required(),
-    body: Joi.string().alphanum().required(),
+    body: Joi.string().required(),
     published: Joi.boolean().required(),
     date: Joi.number().required(),
   }),

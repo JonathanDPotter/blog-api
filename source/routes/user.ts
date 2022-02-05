@@ -11,7 +11,7 @@ router.get("/", controller.getUsers);
 
 router.get("/validate", extractJWT, controller.validateToken);
 
-router.get("/:userId", controller.getUser);
+router.get("/:_id", controller.getUser);
 
 router.post("/register", ValidateJoi(Schemas.user), controller.register);
 

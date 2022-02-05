@@ -8,31 +8,43 @@ import signJWT from "../utils/signJWT";
 
 const validateToken = (req: Request, res: Response) => {
   logger.info("Token validated, user authorized");
-  return res.status(200).json({ message: "Token validated, user authorized." });
+  return res
+    .status(200)
+    .json({ success: true, message: "Token validated, user authorized." });
 };
 
 const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.find().select("-password").exec();
-    return res.status(200).json({
-      users,
-      count: users.length,
-    });
+    const users = await User.find().select("-password");
+    return res.status(200).json({ success: true, users, count: users.length });
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ message, error });
+    res.status(500).json({ success: false, message, error });
   }
 };
 
 const getUser = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.params);
-    res.status(200).json({ user });
+    const user = await User.findById(req.params).select("-password");
+    res.status(200).json({ success: true, user });
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ message, error });
+    res.status(500).json({ success: false, message, error });
+  }
+};
+
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params, req.body, {
+      new: true,
+    }).select("-password");
+    res.send(200).json({ success: true, user });
+  } catch (error: any) {
+     const { message } = error;
+     logger.error(message, error);
+     res.status(500).json({ success: false, message, error });
   }
 };
 
@@ -47,19 +59,20 @@ const login = async (req: Request, res: Response) => {
 
       if (isAuth) {
         signJWT(user, (error, token) => {
-          if (error) res.status(401).json({ message: "Unauthorized" });
-          if (token) res.status(200).json({ token });
+          if (error)
+            res.status(401).json({ success: false, message: "Unauthorized" });
+          if (token) res.status(200).json({ success: true, token });
         });
       } else {
-        res.status(401).json({ message: "Unauthorized" });
+        res.status(401).json({ success: false, message: "Unauthorized" });
       }
     } else {
-      res.status(500).json({ message: "User not found." });
+      res.status(500).json({ success: false, message: "User not found." });
     }
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(400).json({ message, error });
+    res.status(400).json({ success: false, message, error });
   }
 };
 
@@ -69,13 +82,17 @@ const register = async (req: Request, res: Response) => {
   const exists = await User.findOne({ username }).exec();
 
   if (exists) {
-    return res.status(500).json({ message: "Username already in use." });
+    return res
+      .status(500)
+      .json({ success: false, message: "Username already in use." });
   } else {
     bcrypt.hash(password, 10, (hashError, hash) => {
       if (hashError) {
-        return res
-          .status(500)
-          .json({ message: hashError.message, error: hashError });
+        return res.status(500).json({
+          success: false,
+          message: hashError.message,
+          error: hashError,
+        });
       }
 
       const newUser = new User({
@@ -86,9 +103,11 @@ const register = async (req: Request, res: Response) => {
 
       return newUser
         .save()
-        .then((user) => res.status(201).json(user))
+        .then((user) => res.status(201).json({ success: true }))
         .catch((error) =>
-          res.status(500).json({ message: error.message, error })
+          res
+            .status(500)
+            .json({ success: false, message: error.message, error })
         );
     });
   }
