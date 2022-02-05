@@ -3,7 +3,6 @@ import Joi, { ObjectSchema } from "joi";
 import Ipost from "../interfaces/post";
 import Iuser from "../interfaces/user";
 
-
 // regEx string for password
 const passReg =
   "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
@@ -26,8 +25,8 @@ export const Schemas = {
     password: Joi.string().pattern(new RegExp(passReg)).required(),
   }),
   post: Joi.object<Ipost>({
-    author: Joi.string().alphanum().max(15).required(),
-    title: Joi.string().alphanum().max(30).required(),
+    author: Joi.string().max(15).required(),
+    title: Joi.string().max(30).required(),
     body: Joi.string().required(),
     published: Joi.boolean().required(),
     date: Joi.number().required(),
