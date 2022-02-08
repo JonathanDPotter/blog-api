@@ -11,9 +11,10 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
     jwt.verify(token, config.server.token.secret, (error, decoded) => {
       if (error) {
         const { message } = error;
-        return res.status(404).json({ success: false, message, error });
+        return res.json({ success: false, message, error });
       } else {
         res.locals.jwt = decoded;
+        logger.info(`Valid Token`);
         next();
       }
     });

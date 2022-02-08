@@ -20,7 +20,7 @@ const getUsers = async (req: Request, res: Response) => {
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ success: false, message, error });
+    res.json({ success: false, message, error });
   }
 };
 
@@ -31,7 +31,7 @@ const getUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ success: false, message, error });
+    res.json({ success: false, message, error });
   }
 };
 
@@ -42,9 +42,9 @@ const updateUser = async (req: Request, res: Response) => {
     }).select("-password");
     res.send(200).json({ success: true, user });
   } catch (error: any) {
-     const { message } = error;
-     logger.error(message, error);
-     res.status(500).json({ success: false, message, error });
+    const { message } = error;
+    logger.error(message, error);
+    res.status(500).json({ success: false, message, error });
   }
 };
 
@@ -59,15 +59,14 @@ const login = async (req: Request, res: Response) => {
 
       if (isAuth) {
         signJWT(user, (error, token) => {
-          if (error)
-            res.status(401).json({ success: false, message: "Unauthorized" });
+          if (error) res.json({ success: false, message: "Unauthorized" });
           if (token) res.status(200).json({ success: true, token });
         });
       } else {
-        res.status(401).json({ success: false, message: "Unauthorized" });
+        res.json({ success: false, message: "Unauthorized" });
       }
     } else {
-      res.status(500).json({ success: false, message: "User not found." });
+      res.json({ success: false, message: "User not found." });
     }
   } catch (error: any) {
     const { message } = error;
@@ -82,13 +81,12 @@ const register = async (req: Request, res: Response) => {
   const exists = await User.findOne({ username }).exec();
 
   if (exists) {
-    return res
-      .status(500)
-      .json({ success: false, message: "Username already in use." });
+    console.log("user exists");
+    return res.json({ success: false, message: "Username already in use." });
   } else {
     bcrypt.hash(password, 10, (hashError, hash) => {
       if (hashError) {
-        return res.status(500).json({
+        return res.json({
           success: false,
           message: hashError.message,
           error: hashError,
@@ -105,9 +103,7 @@ const register = async (req: Request, res: Response) => {
         .save()
         .then((user) => res.status(201).json({ success: true }))
         .catch((error) =>
-          res
-            .status(500)
-            .json({ success: false, message: error.message, error })
+          res.json({ success: false, message: error.message, error })
         );
     });
   }

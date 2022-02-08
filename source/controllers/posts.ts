@@ -9,7 +9,7 @@ const getPosts = async (req: Request, res: Response) => {
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ success: false, message, error });
+    res.json({ success: false, message, error });
   }
 };
 
@@ -20,21 +20,22 @@ const getPost = async (req: Request, res: Response) => {
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ success: false, message, error });
+    res.json({ success: false, message, error });
   }
 };
 
 const createPost = async (req: Request, res: Response) => {
-  const newUser = req.body;
+  const newPost = req.body;
+  console.log(newPost)
 
   try {
-    const post = await Post.create(newUser);
+    const post = await Post.create(newPost);
     post.save();
     res.status(200).json({ success: true });
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ success: false, message, error });
+    res.json({ success: false, message, error });
   }
 };
 
@@ -47,7 +48,7 @@ const updatePost = async (req: Request, res: Response) => {
   } catch (error: any) {
     const { message } = error;
     logger.error(message, error);
-    res.status(500).json({ success: false, message, error });
+    res.json({ success: false, message, error });
   }
 };
 

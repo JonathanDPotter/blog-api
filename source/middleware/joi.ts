@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import Joi, { ObjectSchema } from "joi";
 import Ipost from "../interfaces/post";
 import Iuser from "../interfaces/user";
+import logger from "../utils/logger";
 
 // regEx string for password
 const passReg =
@@ -11,9 +12,10 @@ export const ValidateJoi = (schema: ObjectSchema) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.validateAsync(req.body);
+      logger.info(`Validating: ${req.body}`);
       next();
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       return res.status(422).json({ error });
     }
   };
