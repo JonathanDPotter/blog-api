@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Joi, { ObjectSchema } from "joi";
 import Ipost from "../interfaces/post";
+import Iupdate from "../interfaces/update";
 import Iuser from "../interfaces/user";
 import logger from "../utils/logger";
 
@@ -32,5 +33,10 @@ export const Schemas = {
     body: Joi.string().required(),
     published: Joi.boolean().required(),
     date: Joi.number().required(),
+  }),
+  update: Joi.object<Iupdate>({
+    title: Joi.string().max(15).required(),
+    body: Joi.string().required(),
+    published: Joi.boolean().required(),
   }),
 };

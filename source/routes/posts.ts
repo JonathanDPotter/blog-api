@@ -15,7 +15,7 @@ router.post("/", ValidateJoi(Schemas.post), extractJWT, controller.createPost);
 
 router.put(
   "/:_id",
-  ValidateJoi(Schemas.post),
+  ValidateJoi(Schemas.update),
   extractJWT,
   controller.updatePost
 );
