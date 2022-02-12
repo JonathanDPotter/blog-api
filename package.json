@@ -6,9 +6,8 @@
   "scripts": {
     "dev": "nodemon source/server.ts",
     "heroku-postbuild": "npm install",
-    "postinstall": "npm run tsc",
-    "start": "node dist/server.js",
-    "tsc": "tsc"
+    "postinstall": "tsc",
+    "start": "node dist/server.js"
   },
   "engines": {
     "node": "16.13.2",
@@ -47,7 +46,6 @@
     "pino": "^7.6.5",
     "pino-pretty": "^7.5.1",
     "ts-node": "^10.4.0",
-    "tsc": "^2.0.4",
     "typescript": "^4.5.5"
   }
 }
