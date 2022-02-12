@@ -5,11 +5,20 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon source/server.ts",
+    "heroku-postbuild": "npm install",
     "postinstall": "tsc"
   },
-  "engines": {"node": "16.13.2"},
-  "keywords": [],
-  "author": "",
+  "engines": {
+    "node": "16.13.2"
+  },
+  "keywords": [
+    "typescript",
+    "express",
+    "mongoose",
+    "jwt",
+    "REST"
+  ],
+  "author": "Jonathan Potter",
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
