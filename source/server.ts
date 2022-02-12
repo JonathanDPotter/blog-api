@@ -1,9 +1,10 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 // utils
 import config from "./config";
 import mongo from "./utils/mongo";
 import logger from "./utils/logger";
+import welcome from "./welcome.json";
 // routes
 import utilityRoutes from "./routes/utility";
 import userRoutes from "./routes/user";
@@ -25,4 +26,8 @@ server.listen(config.server.port, async () => {
   server.use("/api", utilityRoutes);
   server.use("/api/users", userRoutes);
   server.use("/api/posts", postRoutes);
+  // welcome message
+  server.get("/", (req: Request, res: Response) => {
+    res.status(200).json(welcome);
+  });
 });

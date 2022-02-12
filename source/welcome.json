@@ -1,0 +1,37 @@
+{
+  "message": "Welcome to my site.",
+  "routes": {
+    "users": {
+      "route": "/api/users",
+      "get": [
+        { "/": "returns all registered users" },
+        { "/validate": "extracts and validates authorization tokens" },
+        { "/_id": "gets user by _id" }
+      ],
+      "post": [
+        { "/register": "registers new users" },
+        {
+          "/login": "returns an authorization token to the client which expires in 24 hours"
+        }
+      ]
+    },
+    "posts": {
+      "route": "/api/posts",
+      "get": [
+        { "/": "returns all posts" },
+        { "/:_id": "returns one post by _id" }
+      ],
+      "post": [{ "/": "adds a new post" }],
+      "put": [{ "/:_id": "updates post by _id" }],
+      "delete": [{ "/:_id": "deletes post by _id" }]
+    },
+    "utility": {
+      "route": "/api",
+      "get": [{ "/healthcheck": "returns a status 200 if server is running" }]
+    },
+    "home": {
+      "route": "/",
+      "get": [{ "/": "returns this json" }]
+    }
+  }
+}
