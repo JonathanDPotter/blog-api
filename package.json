@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon source/server.ts"
+    "dev": "nodemon source/server.ts",
+    "postinstall": "tsc"
   },
+  "engines": {"node": "16.13.2"},
   "keywords": [],
   "author": "",
   "license": "ISC",
