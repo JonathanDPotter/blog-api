@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "nodemon source/server.ts",
     "heroku-postbuild": "npm install",
-    "postinstall": "tsc",
-    "start": "node dist/server.js"
+    "postinstall": "npm run tsc",
+    "start": "node dist/server.js",
+    "tsc": "tsc"
   },
   "engines": {
     "node": "16.13.2",
